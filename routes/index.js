@@ -6,12 +6,7 @@ var connection = require('../db.js');
 var tables = {};
 var sql = "show tables";
 connection.query(sql, function (err, rows) {
-
-	if(err) {
-		tables = err;
-	}
-
-	tables = rows;
+    tables = (!err)? rows : err ;
 });
 
 /* GET home page. */
@@ -21,7 +16,7 @@ router.get('/', function(req, res, next) {
         title: req.app.locals.title,
         tables: tables
     };
-
+    console.log(tables);
 	res.render('index', viewObject);
 });
 
