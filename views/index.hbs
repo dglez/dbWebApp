@@ -13,9 +13,10 @@
 			<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 
                 {{#each tables}}
-
-                    <li data="{{Tables_in_company_db}}"><a>{{Tables_in_company_db}}</a></li>
-
+                    <!--We loop thouw the key, otherwise it would be hardcoded-->
+                    {{#each this}}
+                        <li data="{{this}}"><a>{{this}}</a></li>
+                    {{/each}}
                 {{/each}}
 			</ul>
 		</div>

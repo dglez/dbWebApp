@@ -5,16 +5,12 @@ var fs = require('fs');
 var content = fs.readFileSync('./dbCredentials.json');
 var credentials = JSON.parse(content);
 
-// creating connection 
+// creating connection
 var connection = mysql.createConnection(credentials);
 
 
 module.exports = {
-
-    con:connection,
-
-
-    connect: function(){
+    connect: function () {
         connection.connect(function (err) {
 
             if (err) {
@@ -25,9 +21,7 @@ module.exports = {
         });
     },
 
-
     query: function (sql, callback) {
-
         connection.query(sql, function (err, rows, fields) {
 
             if (err) {
@@ -37,9 +31,4 @@ module.exports = {
             return callback(err, rows, fields);
         });
     }
-
 };
-
-
-
-

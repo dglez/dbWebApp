@@ -1,53 +1,44 @@
 var express = require('express');
-//var handlebars = require('handlebars')
 var router = express.Router();
+var handlebars = require('handlebars');
 var connection = require('../db.js');
 
 
+// API doc for users
+router.get('/', function (req, res, next) {
 
-// API doc for users 
-router.get('/',function(req, res, next){
-
-	var message = "you are using my api\n to use my api use:\n"
-	" Get all reacords: http://localhost:3000/api/records"
-	" Get update: http://localhost:3000/api/records/:id"
-	" Get delete a reacord: http://localhost:3000/api/records/:id"
-	" Get get a record: http://localhost:3000/api/records/:id";
-
-	res.send(message);
+    var message = "You are using my api\n to use my api use:\n";
+    res.send(message);
 
 });
 
 /*-----------------------------------------------------------------------+
- *	"/records"
+ *	"/table"
  *    GET: finds all records from table that is requested
  *    POST: creates a new record
- */ 
- router.get('/:table?',function(req, res, next){
+ */
+router.get('/:table?', function (req, res, next) {
 
+    var sql = "SELECT * FROM " + req.params.table + " LIMIT 10";
 
+    connection.query(sql, function (err, rows, fields) {
 
- 	var sql = "SELECT * FROM " + req.params.table;
+        var src = '../views/ajaxPartials/query-result';
+        var viewObject = {
+            fields: fields,
+            rows: rows
+        };
 
- 	console.log(sql);
- 	connection.query(sql, function (err, rows, fields) {
- 		
- 		console.log(fields);
+        if (err) {
+            res.send(err);
+            return;
+        }
 
- 		var template = Handlebars.compile(
- 		    '../views/ajaxPartials/queryresult',
-            {
-                fields: fields,
-                rows: rows
-            });
- 		console.log(template);
+        res.render(src, viewObject);
+    });
+});
 
- 		res.send((!err)? template : err);
- 	});
-
- });
-
- router.post('/',function(req, res, next){
+router.post('/', function (req, res, next) {
 
     // TODO post
     res.send();
@@ -55,39 +46,32 @@ router.get('/',function(req, res, next){
 });
 
 
-
-
-/*-----------------------------------------------------------------------+ 
+/*-----------------------------------------------------------------------+
  *    "/contacts/:id"
  *    GET: find contact by id
  *    PUT: update contact by id
  *    DELETE: deletes contact by id
  */
 
- router.get('/:table/:id',function(req, res, next){
+router.get('/:table/:id', function (req, res, next) {
 
- 	res.send("im here");
+    res.send("im here");
 
- });
-
-
- router.put('/:id',function(req, res, next){
-
- 	var message = "you just updated id : " + req.params.id;
- 	res.send(message);
-
- });
- router.delete('/:id',function(req, res, next){
-
- 	var message = "you just deleted id : " + req.params.id;
- 	res.send(message);
-
- });
+});
 
 
+router.put('/:id', function (req, res, next) {
+
+    var message = "you just updated id : " + req.params.id;
+    res.send(message);
+
+});
+router.delete('/:id', function (req, res, next) {
+
+    var message = "you just deleted id : " + req.params.id;
+    res.send(message);
+
+});
 
 
-
-
-
- module.exports = router;
+module.exports = router;
