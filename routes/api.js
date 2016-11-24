@@ -8,11 +8,7 @@ var connection = require('../db.js');
 // API doc for users 
 router.get('/',function(req, res, next){
 
-	var message = "you are using my api\n to use my api use:\n"
-	" Get all reacords: http://localhost:3000/api/records"
-	" Get update: http://localhost:3000/api/records/:id"
-	" Get delete a reacord: http://localhost:3000/api/records/:id"
-	" Get get a record: http://localhost:3000/api/records/:id";
+	var message = "You are using my api\n to use my api use:\n"
 
 	res.send(message);
 

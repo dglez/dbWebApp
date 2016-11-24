@@ -13,6 +13,10 @@ var api = require('./routes/api');
 
 var app = express();
 
+// set locals for the applications
+app.locals.title = "Database App"
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
