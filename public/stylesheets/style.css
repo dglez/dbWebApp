@@ -1,8 +1,26 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
+.row {
+  margin-bottom: 15px; }
 
-a {
-  color: #00B7FF; }
+.fa-pencil {
+  color: #0091ff; }
+
+.fa-trash-o {
+  color: #ff0000; }
+
+.fa-check {
+  color: #7fba06; }
+
+.fa {
+  cursor: pointer; }
+
+.panel-heading {
+  text-transform: capitalize;
+  font-weight: bold; }
+
+.page-header {
+  text-transform: capitalize; }
+
+.data-controls {
+  max-width: 50px; }
 
 /*# sourceMappingURL=style.css.map */

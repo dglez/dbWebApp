@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="bin\www-mac" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="/usr/local/bin/node" path-to-js-file="bin/www" node-parameters="\usr\local\bin\nodemon" working-dir="$PROJECT_DIR$">
+  <configuration default="false" name="bin\www-mac" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" path-to-js-file="bin/www" node-parameters="/usr/local/bin/nodemon" working-dir="$PROJECT_DIR$">
     <envs>
       <env name="DEBUG" value="FlyAway:*" />
     </envs>

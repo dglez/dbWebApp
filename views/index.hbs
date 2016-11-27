@@ -1,19 +1,23 @@
 <div class="container">
 	<div class="row">
-		<h3>{{title}}</h3>
+		{{#each dbname}}
+            {{#each this}}
+                <h3 class="page-header" id="db-name" data="{{this}}">{DG} {{this}}</h3>
+            {{/each}}
+        {{/each}}
 	</div>
 	<div class="row">
 
 
 		<div class="dropdown">
-			<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-				Dropdown
+			<button class="btn btn-default dropdown-toggle" type="button" id="db-tables" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				Select Table
 				<span class="caret"></span>
 			</button>
-			<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+			<ul class="dropdown-menu" aria-labelledby="db-tables">
 
                 {{#each tables}}
-                    <!--We loop thouw the key, otherwise it would be hardcoded-->
+                    <!--We loop through the key, otherwise it would be hardcoded-->
                     {{#each this}}
                         <li data="{{this}}"><a>{{this}}</a></li>
                     {{/each}}
@@ -21,7 +25,8 @@
 			</ul>
 		</div>
 	</div>
-</div>
-<div id="table-display">
+
+<div class="row" id="table-display">
 	
+</div>
 </div>
