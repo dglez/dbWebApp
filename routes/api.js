@@ -32,6 +32,7 @@ router.get('/', function (req, res, next) {
  		connection.query(sql, function (err2, rows2, fields2) {
 
  			var key;
+
  			rows2.forEach(function (row) {
  				if (row.Key == 'PRI'){
  					key = row.Field;
@@ -57,11 +58,15 @@ router.get('/', function (req, res, next) {
 
 
 
- router.post('/:table/:id', function (req, res, next) {
+ router.post('/:db/:table/', function (req, res, next) {
 
-    // TODO post
+     var dbObj = getDbObjects(req);
+     var sql = getInsertSql(dbObj);
 
-    res.send("i just posted " + req.params.table + " " + req.params.id);
+     connection.query(sql, function (err, rows, fields) {
+
+         res.send((err)? {error: err, query:sql} :{error: null, query:sql});
+     });
 
 });
 
@@ -75,28 +80,15 @@ router.get('/', function (req, res, next) {
 
  router.put('/:db/:table/:id', function (req, res, next) {
 
- 	var db = req.params.db;
- 	var table = req.params.table;
- 	var key = req.body.key;
- 	var id = req.params.id;
- 	var value = req.body.values;
-
-
- 	var sql = "UPDATE `" + db + "`.`" + table + "` " + "SET " + value + " " + "WHERE `" + key + "`='" + id + "'";
-
- 	console.log(sql);
-
+ 	var dbObj = getDbObjects(req);
+ 	var sql = getUpdateSql(dbObj);
+console.log(sql);
  	connection.query(sql, function (err, rows, fields) {
 
- 		res.send((err)? (err + "\n" + sql) : sql);
+ 		res.send((err)? {error: err, query:sql} :{error: null, query:sql});
  	});
 
  });
-
-
-
-
-
 
 
 
@@ -107,17 +99,12 @@ router.get('/', function (req, res, next) {
 
  router.delete('/:db/:table/:id', function (req, res, next) {
 
- 	var db = req.params.db;
- 	var table = req.params.table;
- 	var key = req.body.key;
- 	var id = req.params.id;
+     var dbObj = getDbObjects(req);
+     var sql = getDeleteSql(dbObj);
 
- 	var sql = "DELETE FROM `" + db + "`.`" + table + 
- 				"` WHERE `" + key + "` = '" + id + "';";
+     connection.query(sql, function (err, rows, fields) {
 
- 	connection.query(sql, function (err, rows, fields) {
-
- 		res.send((err)? (err + "\n" + sql) : sql);
+         res.send((err)? {error: err, query:sql} :{error: null, query:sql});
  	});
  });
 
@@ -136,15 +123,38 @@ router.get('/', function (req, res, next) {
  *
  * @param req the request object
  */
-function getDbObjects(req) {
-    return {
-        db: req.params.database,
-        tbl: "`" + req.params.database + "`.`" + req.params.table + "`",
-        id: "'" + req.params.id + "'",
-        key: "`" + req.params.database + "`.`" + req.params.table + "`.`" + req.body.key + "`",
-        values: req.body.values
-    };
+ function getDbObjects(req) {
+
+
+ 	return {
+ 		db: (req.params.db)? req.params.db : {},
+ 		table: (req.params.table)? req.params.table : {},
+ 		id: (req.params.id)? req.params.id : {},
+ 		key: (req.body.key)? req.body.key : {},
+ 		values: (req.body.values)? req.body.values : {}
+ 	};
+ }
+
+
+ function getUpdateSql(dbObj) {
+ 	return "UPDATE `" + dbObj.db + "`.`" + dbObj.table + "` " +
+ 	"SET " + dbObj.values + " " +
+ 	"WHERE `" + dbObj.key + "`='" + dbObj.id + "';";
+ }
+function getInsertSql(dbObj) {
+
+    return "INSERT INTO `" + dbObj.db + "`.`" + dbObj.table + "` " +
+        "VALUES (" + dbObj.values + ");" ;
+
 }
 
+function getDeleteSql(dbObj) {
+
+    return "DELETE FROM `" + dbObj.db + "`.`" + dbObj.table +
+        "` WHERE `" + dbObj.key + "` = '" + dbObj.id + "';"
+}
+
+
+ 
 
  module.exports = router;

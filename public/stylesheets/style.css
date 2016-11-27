@@ -1,6 +1,9 @@
 .row {
   margin-bottom: 15px; }
 
+.fa {
+  cursor: pointer; }
+
 .fa-pencil {
   color: #0091ff; }
 
@@ -10,8 +13,21 @@
 .fa-check {
   color: #7fba06; }
 
-.fa {
-  cursor: pointer; }
+.fa-sign-in {
+  color: #7fba06;
+  line-height: 1.3em; }
+
+.disabled {
+  color: #5e5e5e; }
+
+.messages {
+  color: #7fba06; }
+
+.error {
+  color: #ff0000; }
+
+.dropdown {
+  padding-left: 0px; }
 
 .panel-heading {
   text-transform: capitalize;

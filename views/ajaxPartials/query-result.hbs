@@ -1,8 +1,34 @@
 
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading table-name" data-table="{{table}}" data-key="{{key}}">Insert into {{table}}</div>
+
+    <!-- Table -->
+
+    <table class="table">
+        <tbody>
+        <tr id="insert-row">
+            {{#each  fields}}
+                <td class="incert-input" data=""><input type="text" class="form-control" placeholder="{{name}}"></td>
+            {{/each}}
+            <td  class="text-center data-controls right"><i id="insert" class="fa fa-2x fa-sign-in disabled" aria-hidden="true"></i></td>
+
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+
+
+
+
+
+<!--Main table--------------------------------------------------------------------------------------------------------->
+
 
 <div class="panel panel-default">
     <!-- Default panel contents -->
-    <div class="panel-heading" data-table="{{table}}" data-key="{{key}}">{{table}}</div>
+    <div class="panel-heading table-name" data-table="{{table}}" data-key="{{key}}">{{table}} Table</div>
 
     <!-- Table -->
 
@@ -24,8 +50,8 @@
                         {{this}}
                     </td>
                 {{/each}}
-                <td  class="text-center data-controls right"><i id="edit" class="fa fa-pencil" aria-hidden="true"></i></td>
-                <td  class="text-center data-controls right"><i id="delete" class="fa fa-trash-o" aria-hidden="true"></i></td>
+                <td  class="text-center data-controls right"><i id="edit" class="fa fa-lg fa-pencil" aria-hidden="true"></i></td>
+                <td  class="text-center data-controls right"><i id="delete" class="fa fa-lg fa-trash-o" aria-hidden="true"></i></td>
             </tr>
         {{/each}}
         </tbody>
