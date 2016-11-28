@@ -18,7 +18,8 @@
   line-height: 1.3em; }
 
 .disabled {
-  color: #5e5e5e; }
+  color: #5e5e5e;
+  cursor: none; }
 
 .messages {
   color: #7fba06; }
@@ -28,6 +29,9 @@
 
 .dropdown {
   padding-left: 0px; }
+
+#db-name {
+  margin-top: 0px; }
 
 .panel-heading {
   text-transform: capitalize;

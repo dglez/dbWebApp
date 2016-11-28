@@ -1,0 +1,31 @@
+
+<!--Main table--------------------------------------------------------------------------------------------------------->
+
+
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading table-name">{{table}} Table</div>
+
+    <!-- Table -->
+
+    <table class="table">
+        <thead>
+        <tr id="table-attr">
+            {{#each  fields}}
+                <th data="{{name}}">{{name}}</th>
+            {{/each}}
+        </tr>
+        </thead>
+        <tbody>
+        {{#each rows}}
+            <tr>
+                {{# each this }}
+                    <td class="db-content" data="{{this}}">
+                        {{this}}
+                    </td>
+                {{/each}}
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>

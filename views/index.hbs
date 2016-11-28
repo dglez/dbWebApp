@@ -1,12 +1,23 @@
 <div class="container">
-	<div class="row">
+	<div class="row page-header">
+        <div class="col-md-6">
 		{{#each dbname}}
             {{#each this}}
-                <h3 class="page-header" id="db-name" data="{{this}}">{DG} {{this}}</h3>
+                <h3 id="db-name" data="{{this}}">{DG} {{this}}</h3>
             {{/each}}
         {{/each}}
+        </div>
+        <div class="col-lg-6">
+            <div class="input-group">
+                <input  id="search-title" type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+        <button id="search-submit" class="btn btn-default disabled" type="button">Go!</button>
+      </span>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
 	</div>
 	<div class="row">
+
 
 
 		<div class="dropdown col-md-3">

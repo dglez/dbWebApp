@@ -14,6 +14,25 @@ $('.dropdown-menu>li').on('click',function(){
     refreshTable($(this).attr('data'));
 });
 
+/**--------------------------------------------------------------------------------------------------------------------+
+ * Search in Book Title in DB
+ */
+
+$('#search-title').on('input',function () {
+    var input = $(this).val();
+    var submit = $('#search-submit');
+    if (input.length > 0){
+        submit.removeClass('disabled');
+    }else {
+        submit.addClass('disabled');
+    }
+});
+
+
+$('#search-submit').on('click', function () {
+    var input = "search/" + $('#search-title').val();
+    refreshTable(input);
+});
 
 
 
@@ -95,7 +114,7 @@ body.on('click','#delete', function () {
 /**--------------------------------------------------------------------------------------------------------------------+
 * INSERT record in DB
 */
- body.on('focusout', '.form-control', function () {
+ body.on('input', '.input-data', function () {
 
     var currantInput = $(this);
     var allInputs = currantInput.parent().parent().children('.incert-input');
@@ -127,6 +146,10 @@ body.on('click','#delete', function () {
                 });
 
             });
+    }
+    else {
+        insert.addClass('disabled');
+        body.off('click','#insert');
     }
 });
 

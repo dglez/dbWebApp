@@ -3,11 +3,35 @@ var router = express.Router();
 var connection = require('../db.js');
 
 
-// API doc for users
-router.get('/', function (req, res, next) {
+/*-----------------------------------------------------------------------+
+ *	  Search
+ *    GET: finds all records from table that is requested
+ *    POST: creates a new record
+ */
+router.get('/search/:title', function (req, res, next) {
 
-	var message = "You are using my api\n to use my api use:\n";
-	res.send(message);
+
+    var dbObj = getDbObjects(req);
+    var sql = getSearchSql(req);
+
+    connection.query(sql, function (err, rows, fields) {
+
+		console.log(fields);
+        var src = '../views/ajaxPartials/search-result';
+        var viewObject = {
+            layout: false,
+            fields: fields,
+            table:"Search Result",
+            rows: rows,
+            key: {}
+        };
+        if (err){
+            res.send(err);
+            return;
+        }
+        res.render(src, viewObject);
+
+    });
 
 });
 
@@ -18,7 +42,10 @@ router.get('/', function (req, res, next) {
  */
  router.get('/:table?', function (req, res, next) {
 
- 	var sql = "SELECT * FROM " + req.params.table;
+     var dbObj = getDbObjects(req);
+     var sql = getSql(dbObj);
+
+
 
  	connection.query(sql, function (err, rows, fields) {
 
@@ -31,13 +58,7 @@ router.get('/', function (req, res, next) {
  		sql = "EXPLAIN " + req.params.table;
  		connection.query(sql, function (err2, rows2, fields2) {
 
- 			var key;
-
- 			rows2.forEach(function (row) {
- 				if (row.Key == 'PRI'){
- 					key = row.Field;
- 				}
- 			});
+            var key = getPriKeyField(rows2);
  			var viewObject = {
  				layout: false,
  				fields: fields,
@@ -82,7 +103,6 @@ router.get('/', function (req, res, next) {
 
  	var dbObj = getDbObjects(req);
  	var sql = getUpdateSql(dbObj);
-console.log(sql);
  	connection.query(sql, function (err, rows, fields) {
 
  		res.send((err)? {error: err, query:sql} :{error: null, query:sql});
@@ -136,7 +156,7 @@ console.log(sql);
  }
 
 
- function getUpdateSql(dbObj) {
+function getUpdateSql(dbObj) {
  	return "UPDATE `" + dbObj.db + "`.`" + dbObj.table + "` " +
  	"SET " + dbObj.values + " " +
  	"WHERE `" + dbObj.key + "`='" + dbObj.id + "';";
@@ -151,10 +171,45 @@ function getInsertSql(dbObj) {
 function getDeleteSql(dbObj) {
 
     return "DELETE FROM `" + dbObj.db + "`.`" + dbObj.table +
-        "` WHERE `" + dbObj.key + "` = '" + dbObj.id + "';"
+        "` WHERE `" + dbObj.key + "` = '" + dbObj.id + "';";
 }
 
+function getSearchSql(req) {
 
+ 	var sql = "SELECT d.title, d.bookCode, author.authorFirst , author.authorLast, d.publisherCode AS pcode, d.publisherName AS pname, d.city, d.branchName, d.branchLocation, d.OnHand"
+    + " FROM ( "
+    +" SELECT c.title, c.bookCode, c.publisherCode, c.OnHand, c.branchName, c.branchLocation , c.publisherName, c.city, wrote.authorNum"
+    +" FROM ("
+    +" SELECT b.title, b.bookCode, b.publisherCode, b.OnHand, b.branchName, b.branchLocation , publisher.publisherName, publisher.city"
+    +" FROM ("
+    +" SELECT a.title, a.bookCode, a.publisherCode, a.OnHand, Branch.branchName, Branch.branchLocation"
+    +" FROM ("
+    +" SELECT Book.title, Book.bookCode, Book.publisherCode, Inventory.OnHand, Inventory.BranchNum"
+    +" FROM Book"
+    +" JOIN Inventory"
+    +" ON Book.bookCode=Inventory.BookCode"
+    +" WHERE title LIKE " +  "'" + "%"+ req.params.title + "%" +  "'"  + ") AS a"
+    +" JOIN Branch ON a.branchNum = Branch.branchNum) AS b"
+    +" JOIN Publisher on b.publisherCode = Publisher.publisherCode) AS c"
+    +" JOIN wrote ON c.bookCode = wrote.bookCode) AS d"
+    +" JOIN author ON d.authorNum = author.authorNum;";
+ 	console.log(sql);
+	return sql ;
+}
+
+function getSql(dbObj) {
+	return "SELECT * FROM " + dbObj.table;
+}
+
+function getPriKeyField(rows) {
+    var key = {};
+ 	rows.forEach(function (row) {
+        if (row.Key == 'PRI'){
+            key = row.Field;
+        }
+    });
+ 	return key;
+}
  
 
  module.exports = router;
